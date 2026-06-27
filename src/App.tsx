@@ -48,7 +48,7 @@ import ThemeSelector from './components/ThemeSelector';
 
 export default function App() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const [currentTheme, setCurrentTheme] = useState<ThemeConfig>(THEME_PRESETS[0]); // Default to Islamic Putih & Gold
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -193,6 +193,14 @@ export default function App() {
         isDarkMode ? 'dark text-zinc-100' : 'text-stone-800'
       }`}
     >
+      {/* Theme Switcher controls at top, visible on both Cover and Main Content */}
+      <ThemeSelector
+        currentTheme={currentTheme}
+        onSelectTheme={handleSelectTheme}
+        isDarkMode={isDarkMode}
+        onToggleDarkMode={handleToggleDarkMode}
+      />
+
       {/* 1. Cover Welcome Screen */}
       <AnimatePresence>
         {!isOpen && (
@@ -201,6 +209,7 @@ export default function App() {
             brideName={BRIDE_DATA.name}
             dateString="Senin, 20 Juli 2026"
             theme={currentTheme}
+            isDarkMode={isDarkMode}
             onOpen={handleOpenInvitation}
           />
         )}
@@ -209,14 +218,6 @@ export default function App() {
       {/* 2. Main Invitation Content */}
       {isOpen && (
         <div className="relative w-full">
-          {/* Theme Switcher controls at top */}
-          <ThemeSelector
-            currentTheme={currentTheme}
-            onSelectTheme={handleSelectTheme}
-            isDarkMode={isDarkMode}
-            onToggleDarkMode={handleToggleDarkMode}
-          />
-
           {/* Background Audio control floating at bottom */}
           <AudioPlayer
             isPlaying={isPlaying}

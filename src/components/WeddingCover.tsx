@@ -5,7 +5,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Mail, Calendar, MapPin } from 'lucide-react';
+import { Mail, Calendar } from 'lucide-react';
 import { ThemeConfig } from '../types';
 import Ornaments from './Ornaments';
 
@@ -14,6 +14,7 @@ interface WeddingCoverProps {
   brideName: string;
   dateString: string;
   theme: ThemeConfig;
+  isDarkMode: boolean;
   onOpen: () => void;
 }
 
@@ -22,6 +23,7 @@ export default function WeddingCover({
   brideName,
   dateString,
   theme,
+  isDarkMode,
   onOpen,
 }: WeddingCoverProps) {
   const [guestName, setGuestName] = useState<string>('Tamu Undangan');
@@ -49,14 +51,10 @@ export default function WeddingCover({
       initial={{ y: 0 }}
       exit={{ y: '-100%', opacity: 0 }}
       transition={{ duration: 1.2, ease: [0.77, 0, 0.175, 1] }}
-      className={`fixed inset-0 z-[100] flex flex-col items-center justify-between p-6 overflow-hidden ${
-        theme.id === 'islamic'
-          ? 'bg-cream text-ink'
-          : theme.id === 'floral'
-          ? 'bg-gradient-to-b from-slate-50 via-slate-100 to-emerald-50 text-slate-800'
-          : theme.id === 'rustic'
-          ? 'bg-gradient-to-b from-orange-50/20 via-orange-100/10 to-stone-100 text-stone-800'
-          : 'bg-white text-neutral-800'
+      className={`fixed inset-0 z-[100] flex flex-col items-center justify-between p-6 overflow-hidden transition-colors duration-500 ${
+        isDarkMode ? theme.bgDark : theme.bgLight
+      } ${
+        isDarkMode ? 'dark text-zinc-100' : 'text-stone-800'
       }`}
     >
       {/* Geometric balance pattern overlay */}
@@ -67,8 +65,8 @@ export default function WeddingCover({
         <>
           <Ornaments type="mandala" className="w-[120%] h-[120%] top-[-30%] left-[-10%] opacity-[0.04]" />
           <Ornaments type="mandala" className="w-[120%] h-[120%] bottom-[-40%] right-[-10%] opacity-[0.04]" />
-          <Ornaments type="lantern" className="top-0 left-8" />
-          <Ornaments type="lantern" className="top-0 right-8" />
+          <Ornaments type="lantern" className="top-0 left-8 animate-pulse-subtle" />
+          <Ornaments type="lantern" className="top-0 right-8 animate-pulse-subtle" />
         </>
       )}
 
@@ -79,15 +77,19 @@ export default function WeddingCover({
         transition={{ delay: 0.2, duration: 0.8 }}
         className="text-center mt-12 z-10"
       >
-        <span className="text-xs uppercase tracking-[0.25em] text-gold-dark font-bold mb-6 block">
+        <span className={`text-xs uppercase tracking-[0.25em] font-bold mb-6 block ${
+          isDarkMode ? 'text-gold-light' : 'text-gold-dark'
+        }`}>
           UNDANGAN PERNIKAHAN
         </span>
         {theme.id === 'islamic' ? (
-          <h2 className="font-arabic text-3xl md:text-4xl text-gold-dark font-semibold mt-4 mb-2">
+          <h2 className={`font-arabic text-3xl md:text-4xl font-semibold mt-4 mb-2 ${
+            isDarkMode ? 'text-gold-light' : 'text-gold-dark'
+          }`}>
             بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
           </h2>
         ) : (
-          <div className="h-[2px] w-12 bg-current mx-auto my-2 opacity-30" />
+          <div className={`h-[2px] w-12 mx-auto my-2 opacity-30 ${isDarkMode ? 'bg-zinc-100' : 'bg-stone-800'}`} />
         )}
       </motion.div>
 
@@ -97,7 +99,9 @@ export default function WeddingCover({
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.4, duration: 1 }}
-          className="font-serif text-4xl sm:text-5xl md:text-6xl text-gold-dark font-bold tracking-tight px-4 leading-normal"
+          className={`font-serif text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight px-4 leading-normal ${
+            isDarkMode ? 'text-gold-light' : 'text-gold-dark'
+          }`}
         >
           {groomName}
           <span className="block font-script text-4xl sm:text-5xl md:text-6xl text-gold-mid my-2 font-normal">
@@ -110,9 +114,11 @@ export default function WeddingCover({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6, duration: 0.8 }}
-          className="mt-6 flex items-center gap-3 text-sm text-stone-600 font-medium"
+          className={`mt-6 flex items-center gap-3 text-sm font-medium ${
+            isDarkMode ? 'text-stone-300' : 'text-stone-600'
+          }`}
         >
-          <Calendar className="h-4 w-4 text-gold-dark" />
+          <Calendar className={`h-4 w-4 ${isDarkMode ? 'text-gold-light' : 'text-gold-dark'}`} />
           <span>{dateString}</span>
         </motion.div>
       </div>
@@ -124,11 +130,19 @@ export default function WeddingCover({
         transition={{ delay: 0.8, duration: 0.8 }}
         className="w-full max-w-sm text-center mb-12 z-10 px-4"
       >
-        <div className="rounded-3xl bg-white/80 dark:bg-stone-900/60 p-6 shadow-[0_4px_24px_rgba(139,107,53,0.06)] border border-gold-mid/20 backdrop-blur-md mb-6">
-          <p className="text-xs text-stone-500 tracking-wider mb-2 uppercase font-medium">
+        <div className={`rounded-3xl p-6 shadow-[0_4px_24px_rgba(139,107,53,0.06)] border backdrop-blur-md mb-6 ${
+          isDarkMode
+            ? 'bg-stone-900/85 border-gold-mid/30 shadow-[0_4px_24px_rgba(0,0,0,0.4)]'
+            : 'bg-white/80 border-gold-mid/20 shadow-[0_4px_24px_rgba(139,107,53,0.06)]'
+        }`}>
+          <p className={`text-xs tracking-wider mb-2 uppercase font-medium ${
+            isDarkMode ? 'text-stone-400' : 'text-stone-500'
+          }`}>
             Kepada Yth.
           </p>
-          <h3 className="font-serif text-lg md:text-xl font-bold text-ink dark:text-gold-light px-2 line-clamp-2">
+          <h3 className={`font-serif text-lg md:text-xl font-bold px-2 line-clamp-2 ${
+            isDarkMode ? 'text-gold-light' : 'text-ink'
+          }`}>
             {guestName}
           </h3>
           <p className="text-[11px] text-stone-400 mt-2 italic">

@@ -28,7 +28,7 @@ export default function ThemeSelector({
         e.stopPropagation();
         onToggleDarkMode();
       }}
-      className="fixed top-4 right-4 z-50 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 dark:bg-stone-950/80 border border-stone-200/60 dark:border-white/10 shadow-sm backdrop-blur-md text-stone-600 dark:text-amber-400 transition-all hover:bg-stone-100 dark:hover:bg-stone-900/60 active:scale-95 cursor-pointer"
+      className="fixed top-4 right-4 z-[120] flex h-8 w-8 items-center justify-center rounded-full bg-white/90 dark:bg-stone-950/80 border border-stone-200/60 dark:border-white/10 shadow-sm backdrop-blur-md text-stone-600 dark:text-amber-400 transition-all hover:bg-stone-100 dark:hover:bg-stone-900/60 active:scale-95 cursor-pointer"
       title="Toggle Light/Dark Mode"
     >
       {isDarkMode ? (
