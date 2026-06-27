@@ -265,8 +265,8 @@ export default function App() {
                   className="font-serif text-3xl sm:text-4xl font-extrabold text-gold-600 dark:text-gold-200 uppercase tracking-wide leading-tight px-4"
                 >
                   {GROOM_DATA.fullName}
-                  <span className="block font-script text-4xl text-gold-500 font-normal my-1 text-transform-none lowercase">
-                    dan
+                  <span className="block font-script text-4xl text-gold-500 font-normal my-1 text-transform-none">
+                    &
                   </span>
                   {BRIDE_DATA.fullName}
                 </motion.h2>
@@ -375,7 +375,7 @@ export default function App() {
                   <span className="font-bold text-stone-700 dark:text-stone-200 block mt-1">
                     {GROOM_DATA.parentFather}
                   </span>
-                  dan {GROOM_DATA.parentMother}
+                  & {GROOM_DATA.parentMother}
                 </div>
 
                 <a
@@ -434,7 +434,7 @@ export default function App() {
                   <span className="font-bold text-stone-700 dark:text-stone-200 block mt-1">
                     {BRIDE_DATA.parentFather}
                   </span>
-                  dan {BRIDE_DATA.parentMother}
+                  & {BRIDE_DATA.parentMother}
                 </div>
 
                 <a
