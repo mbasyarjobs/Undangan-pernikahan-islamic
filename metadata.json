@@ -1,0 +1,6 @@
+{
+  "name": "Undangan Digital - Basyar & Khadijah",
+  "description": "Website undangan pernikahan digital premium, elegan, dan eksklusif dengan tema Islamic Putih & Gold.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
