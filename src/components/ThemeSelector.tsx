@@ -22,16 +22,17 @@ export default function ThemeSelector({
   onToggleDarkMode,
 }: ThemeSelectorProps) {
   return (
-    <div className="fixed top-4 right-4 z-50 flex items-center gap-2 rounded-full bg-stone-900/80 p-1 shadow-lg backdrop-blur-md border border-white/10">
-      {/* Light/Dark Toggle */}
-      <button
-        id="btn-toggle-dark"
-        onClick={onToggleDarkMode}
-        className="flex h-9 w-9 items-center justify-center rounded-full text-amber-400 transition-all hover:bg-white/10 active:scale-95"
-        title="Toggle Light/Dark Mode"
-      >
-        {isDarkMode ? <Sun className="h-5 w-5 text-amber-300" /> : <Moon className="h-5 w-5 text-stone-300" />}
-      </button>
-    </div>
+    <button
+      id="btn-toggle-dark"
+      onClick={onToggleDarkMode}
+      className="fixed top-4 right-4 z-50 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 dark:bg-stone-950/80 border border-stone-200/60 dark:border-white/10 shadow-sm backdrop-blur-md text-stone-600 dark:text-amber-400 transition-all hover:bg-stone-100 dark:hover:bg-stone-900/60 active:scale-95 cursor-pointer"
+      title="Toggle Light/Dark Mode"
+    >
+      {isDarkMode ? (
+        <Sun className="h-4 w-4 text-amber-500 animate-pulse-subtle" />
+      ) : (
+        <Moon className="h-4 w-4 text-stone-500" />
+      )}
+    </button>
   );
 }

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Calendar,
@@ -51,9 +51,53 @@ export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [currentTheme, setCurrentTheme] = useState<ThemeConfig>(THEME_PRESETS[0]); // Default to Islamic Putih & Gold
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
   const [wishes, setWishes] = useState<Wish[]>([]);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
+
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Initialize and load audio element on mount
+  useEffect(() => {
+    // Beautiful, romantic, high-quality direct streaming wedding audio
+    const audio = new Audio('https://archive.org/download/christina-perri-a-thousand-years_202108/christina-perri-a-thousand-years_202108.mp3');
+    audio.loop = true;
+    audio.volume = 0.45;
+    audioRef.current = audio;
+
+    const fallbacks = [
+      'https://assets.mixkit.co/music/preview/mixkit-wedding-bells-2182.mp3',
+      'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
+    ];
+    let fallbackIndex = 0;
+
+    const handleError = () => {
+      if (fallbackIndex < fallbacks.length) {
+        console.warn('Primary audio failed, switching to fallback...');
+        audio.src = fallbacks[fallbackIndex];
+        fallbackIndex++;
+        // If it was already supposed to play, keep playing
+        if (isPlaying) {
+          audio.play().catch(e => console.log('Fallback autoplay deferred:', e));
+        }
+      }
+    };
+
+    audio.addEventListener('error', handleError);
+
+    return () => {
+      audio.removeEventListener('error', handleError);
+      audio.pause();
+    };
+  }, []);
+
+  // Synchronize mute state
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.muted = isMuted;
+    }
+  }, [isMuted]);
 
   // Load and save state
   useEffect(() => {
@@ -86,10 +130,24 @@ export default function App() {
   const handleOpenInvitation = () => {
     setIsOpen(true);
     setIsPlaying(true);
+    if (audioRef.current) {
+      audioRef.current.play().catch((err) => {
+        console.warn('Playback block on open:', err);
+      });
+    }
   };
 
   const handleTogglePlay = (playing: boolean) => {
     setIsPlaying(playing);
+    if (audioRef.current) {
+      if (playing) {
+        audioRef.current.play().catch((err) => {
+          console.warn('Playback block on toggle:', err);
+        });
+      } else {
+        audioRef.current.pause();
+      }
+    }
   };
 
   const handleSelectTheme = (theme: ThemeConfig) => {
@@ -161,9 +219,10 @@ export default function App() {
 
           {/* Background Audio control floating at bottom */}
           <AudioPlayer
-            autoPlayAfterInteraction={true}
             isPlaying={isPlaying}
             onTogglePlay={handleTogglePlay}
+            isMuted={isMuted}
+            onToggleMute={() => setIsMuted(!isMuted)}
           />
 
           {/* Core Content Shell - Centered container that maximizes phone visual appeal and expands cleanly on desktop */}

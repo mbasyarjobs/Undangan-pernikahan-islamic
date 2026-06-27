@@ -16,8 +16,7 @@ interface RSVPFormProps {
 export default function RSVPForm({ theme, onSubmitRSVP }: RSVPFormProps) {
   const [name, setName] = useState('');
   const [totalGuests, setTotalGuests] = useState(1);
-  const [isAttending, setIsAttending] = useState<'Hadir' | 'Tidak Hadir' | 'Ragu-ragu'>('Hadir');
-  const [relation, setRelation] = useState('Teman');
+  const [isAttending, setIsAttending] = useState<'Hadir' | 'Tidak Hadir'>('Hadir');
   const [wishes, setWishes] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -34,7 +33,7 @@ export default function RSVPForm({ theme, onSubmitRSVP }: RSVPFormProps) {
         totalGuests: isAttending === 'Hadir' ? totalGuests : 0,
         isAttending,
         wishes,
-        relation,
+        relation: 'Teman', // Default fallback relation to keep type safety
       });
       setLoading(false);
       setIsSubmitted(true);
@@ -45,7 +44,6 @@ export default function RSVPForm({ theme, onSubmitRSVP }: RSVPFormProps) {
     setName('');
     setTotalGuests(1);
     setIsAttending('Hadir');
-    setRelation('Teman');
     setWishes('');
     setIsSubmitted(false);
   };
@@ -95,58 +93,40 @@ export default function RSVPForm({ theme, onSubmitRSVP }: RSVPFormProps) {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
+          {isAttending === 'Hadir' && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
               <label className="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-1.5">
-                Hubungan
+                Jumlah Tamu
               </label>
-              <select
-                id="rsvp-select-relation"
-                value={relation}
-                onChange={(e) => setRelation(e.target.value)}
-                className="w-full rounded-xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-950 py-3.5 px-3 text-sm text-stone-800 dark:text-stone-100 focus:outline-none focus:ring-1 focus:ring-gold-dark/50 focus:border-gold-dark"
-              >
-                <option value="Keluarga">Keluarga</option>
-                <option value="Teman">Teman</option>
-                <option value="Rekan Kerja">Rekan Kerja</option>
-                <option value="Tetangga">Tetangga</option>
-                <option value="Lainnya">Lainnya</option>
-              </select>
-            </div>
-
-            {isAttending === 'Hadir' && (
-              <div>
-                <label className="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-1.5">
-                  Jumlah Tamu
-                </label>
-                <div className="relative">
-                  <Users className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-400" />
-                  <select
-                    id="rsvp-select-guests"
-                    value={totalGuests}
-                    onChange={(e) => setTotalGuests(Number(e.target.value))}
-                    className="w-full rounded-xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-950 py-3.5 pl-10 pr-3 text-sm text-stone-800 dark:text-stone-100 focus:outline-none focus:ring-1 focus:ring-gold-dark/50 focus:border-gold-dark"
-                  >
-                    <option value="1">1 Orang</option>
-                    <option value="2">2 Orang</option>
-                    <option value="3">3 Orang</option>
-                    <option value="4">4 Orang</option>
-                    <option value="5">5 Orang</option>
-                  </select>
-                </div>
+              <div className="relative">
+                <Users className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-400" />
+                <select
+                  id="rsvp-select-guests"
+                  value={totalGuests}
+                  onChange={(e) => setTotalGuests(Number(e.target.value))}
+                  className="w-full rounded-xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-950 py-3.5 pl-10 pr-3 text-sm text-stone-800 dark:text-stone-100 focus:outline-none focus:ring-1 focus:ring-gold-dark/50 focus:border-gold-dark"
+                >
+                  <option value="1">1 Orang</option>
+                  <option value="2">2 Orang</option>
+                  <option value="3">3 Orang</option>
+                  <option value="4">4 Orang</option>
+                  <option value="5">5 Orang</option>
+                </select>
               </div>
-            )}
-          </div>
+            </motion.div>
+          )}
 
           <div>
             <label className="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-1.5">
               Konfirmasi Kehadiran
             </label>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-4">
               {[
                 { id: 'Hadir', label: 'Hadir', icon: CheckCircle2, color: 'text-emerald-500' },
-                { id: 'Tidak Hadir', label: 'Absen', icon: HeartHandshake, color: 'text-rose-500' },
-                { id: 'Ragu-ragu', label: 'Ragu', icon: HelpCircle, color: 'text-amber-500' },
+                { id: 'Tidak Hadir', label: 'Tidak Hadir', icon: HeartHandshake, color: 'text-rose-500' },
               ].map((item) => {
                 const isSelected = isAttending === item.id;
                 const Icon = item.icon;
@@ -156,10 +136,10 @@ export default function RSVPForm({ theme, onSubmitRSVP }: RSVPFormProps) {
                     id={`rsvp-status-${item.id}`}
                     type="button"
                     onClick={() => setIsAttending(item.id as any)}
-                    className={`flex flex-col items-center justify-center p-3 rounded-xl border transition-all cursor-pointer ${
+                    className={`flex flex-col items-center justify-center p-3.5 rounded-xl border transition-all cursor-pointer ${
                       isSelected
-                        ? 'border-gold-dark bg-gold-dark/10 dark:bg-gold-mid/25'
-                        : 'border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-950 hover:bg-stone-50'
+                        ? 'border-gold-dark bg-gold-dark/10 dark:bg-gold-mid/25 ring-1 ring-gold-dark'
+                        : 'border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-950 hover:bg-stone-50 dark:hover:bg-stone-900/40'
                     }`}
                   >
                     <Icon className={`h-5 w-5 mb-1 ${item.color}`} />

@@ -27,11 +27,20 @@ export default function WeddingCover({
   const [guestName, setGuestName] = useState<string>('Tamu Undangan');
 
   useEffect(() => {
-    // Read query parameter for guest name (e.g. ?to=Bapak+Rahmat or ?guest=...)
+    // Membaca nilai parameter URL "to" menggunakan JavaScript bawaan browser
     const params = new URLSearchParams(window.location.search);
-    const to = params.get('to') || params.get('guest') || params.get('nama');
-    if (to) {
-      setGuestName(decodeURIComponent(to));
+    const toParam = params.get('to');
+    
+    if (toParam && toParam.trim() !== '') {
+      // Decode karakter yang mengandung spasi atau simbol secara aman
+      try {
+        const decoded = decodeURIComponent(toParam.replace(/\+/g, ' '));
+        setGuestName(decoded);
+      } catch (e) {
+        setGuestName(toParam);
+      }
+    } else {
+      setGuestName('Tamu Undangan');
     }
   }, []);
 
@@ -70,11 +79,11 @@ export default function WeddingCover({
         transition={{ delay: 0.2, duration: 0.8 }}
         className="text-center mt-12 z-10"
       >
-        <span className="text-xs uppercase tracking-[0.25em] text-gold-dark font-bold mb-1 block">
+        <span className="text-xs uppercase tracking-[0.25em] text-gold-dark font-bold mb-6 block">
           UNDANGAN PERNIKAHAN
         </span>
         {theme.id === 'islamic' ? (
-          <h2 className="font-arabic text-3xl md:text-4xl text-gold-dark font-semibold mb-2">
+          <h2 className="font-arabic text-3xl md:text-4xl text-gold-dark font-semibold mt-4 mb-2">
             بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
           </h2>
         ) : (
@@ -84,12 +93,6 @@ export default function WeddingCover({
 
       {/* Main Bride & Groom Titles */}
       <div className="text-center my-auto py-8 z-10 flex flex-col items-center justify-center">
-        {theme.id === 'islamic' && (
-          <span className="font-arabic text-4xl md:text-5xl text-gold-dark/80 mb-4 tracking-wide block animate-pulse-subtle">
-            بارَكَ اللهُ لَكُما
-          </span>
-        )}
-
         <motion.h1
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -122,8 +125,8 @@ export default function WeddingCover({
         className="w-full max-w-sm text-center mb-12 z-10 px-4"
       >
         <div className="rounded-3xl bg-white/80 dark:bg-stone-900/60 p-6 shadow-[0_4px_24px_rgba(139,107,53,0.06)] border border-gold-mid/20 backdrop-blur-md mb-6">
-          <p className="text-xs text-stone-500 tracking-wider mb-2 uppercase">
-            Kepada Yth. Bapak/Ibu/Saudara/i:
+          <p className="text-xs text-stone-500 tracking-wider mb-2 uppercase font-medium">
+            Kepada Yth.
           </p>
           <h3 className="font-serif text-lg md:text-xl font-bold text-ink dark:text-gold-light px-2 line-clamp-2">
             {guestName}

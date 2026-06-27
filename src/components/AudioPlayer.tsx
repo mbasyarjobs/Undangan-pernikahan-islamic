@@ -3,100 +3,83 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useEffect, useRef, useState } from 'react';
-import { Music, Volume2, VolumeX, Play, Pause } from 'lucide-react';
+import React from 'react';
+import { Music, Play, VolumeX, Volume2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 
 interface AudioPlayerProps {
-  autoPlayAfterInteraction: boolean;
   isPlaying: boolean;
   onTogglePlay: (playing: boolean) => void;
+  isMuted: boolean;
+  onToggleMute: () => void;
 }
 
 export default function AudioPlayer({
-  autoPlayAfterInteraction,
   isPlaying,
   onTogglePlay,
+  isMuted,
+  onToggleMute,
 }: AudioPlayerProps) {
-  // Use a beautiful version of Christina Perri - A Thousand Years
-  const audioUrl = 'https://archive.org/download/christina-perri-a-thousand-years_202108/christina-perri-a-thousand-years_202108.mp3'; // Highly reliable wedding background music
-  
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [isMuted, setIsMuted] = useState(false);
-
-  useEffect(() => {
-    // Create audio element lazily
-    if (!audioRef.current) {
-      audioRef.current = new Audio(audioUrl);
-      audioRef.current.loop = true;
-      audioRef.current.volume = 0.5;
-    }
-
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!audioRef.current) return;
-
-    if (isPlaying) {
-      const playPromise = audioRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise.catch((error) => {
-          console.log('Autoplay blocked or audio interrupted:', error);
-          onTogglePlay(false);
-        });
-      }
-    } else {
-      audioRef.current.pause();
-    }
-  }, [isPlaying, onTogglePlay]);
-
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.muted = isMuted;
-    }
-  }, [isMuted]);
-
-  const handleTogglePlay = () => {
+  const handleTogglePlay = (e: React.MouseEvent) => {
+    e.stopPropagation();
     onTogglePlay(!isPlaying);
   };
 
   const handleToggleMute = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsMuted(!isMuted);
+    onToggleMute();
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2">
-      <button
-        id="btn-music-mute"
-        onClick={handleToggleMute}
-        className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-900/80 text-white shadow-lg backdrop-blur-md transition-all hover:bg-stone-800 dark:bg-white/80 dark:text-stone-900 dark:hover:bg-white"
-        aria-label={isMuted ? 'Unmute music' : 'Mute music'}
-      >
-        {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5 animate-pulse" />}
-      </button>
+    <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 select-none">
+      <AnimatePresence>
+        {isPlaying && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8, x: 10 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            exit={{ opacity: 0, scale: 0.8, x: 10 }}
+            id="btn-music-mute"
+            onClick={handleToggleMute}
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-white/90 dark:bg-stone-900/95 text-stone-600 dark:text-stone-300 border border-stone-200/60 dark:border-stone-800/80 shadow-md backdrop-blur-md transition-all hover:bg-stone-50 dark:hover:bg-stone-800 cursor-pointer active:scale-95"
+            aria-label={isMuted ? 'Unmute music' : 'Mute music'}
+            title={isMuted ? 'Suara Hidup' : 'Senyap'}
+          >
+            {isMuted ? (
+              <VolumeX className="h-4 w-4 text-rose-500" />
+            ) : (
+              <Volume2 className="h-4 w-4 text-emerald-500" />
+            )}
+          </motion.button>
+        )}
+      </AnimatePresence>
 
       <button
         id="btn-music-play"
         onClick={handleTogglePlay}
-        className={`flex h-14 w-14 items-center justify-center rounded-full text-white shadow-xl backdrop-blur-md transition-all duration-500 hover:scale-105 ${
+        className={`flex h-11 w-11 items-center justify-center rounded-full border shadow-lg backdrop-blur-md transition-all duration-300 cursor-pointer active:scale-95 ${
           isPlaying
-            ? 'bg-amber-600 dark:bg-amber-500 animate-spin-slow'
-            : 'bg-stone-900 hover:bg-stone-800 dark:bg-white dark:text-stone-900 dark:hover:bg-stone-100'
+            ? 'bg-gold-dark border-gold-mid/30 text-white shadow-gold-dark/10'
+            : 'bg-white/90 dark:bg-stone-900/95 border-stone-200/60 dark:border-stone-800/80 text-gold-dark dark:text-gold-light'
         }`}
+        title={isPlaying ? 'Jeda Musik' : 'Putar Musik'}
         aria-label={isPlaying ? 'Pause music' : 'Play music'}
       >
         {isPlaying ? (
-          <div className="relative">
-            <Music className="h-6 w-6" />
-            <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-white dark:bg-stone-950 animate-ping" />
-          </div>
+          <motion.div
+            animate={{ 
+              scale: [1, 1.08, 1],
+            }}
+            transition={{ 
+              duration: 2, 
+              repeat: Infinity, 
+              ease: "easeInOut" 
+            }}
+            className="flex items-center justify-center"
+          >
+            <Music className="h-4 w-4 text-white" />
+          </motion.div>
         ) : (
-          <Play className="h-6 w-6 ml-1 text-white dark:text-stone-900" />
+          <Play className="h-4 w-4 ml-0.5 text-gold-dark dark:text-gold-light" />
         )}
       </button>
     </div>
