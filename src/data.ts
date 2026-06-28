@@ -77,21 +77,21 @@ export const THEME_PRESETS: ThemeConfig[] = [
 ];
 
 export const GROOM_DATA: Profile = {
-  name: 'Basyar',
-  fullName: 'M Khoirul Basyar',
+  name: 'Fahri',
+  fullName: 'Fahri Assyauqi',
   parentFather: 'Bapak H. Ahmad Fauzi',
   parentMother: 'Ibu Hj. Siti Aminah',
-  instagram: 'basyar_khoirul',
+  instagram: 'fahri_assyauqi',
   photoUrl: 'https://images.unsplash.com/photo-1607990283143-e81e7a2c93ab?auto=format&fit=crop&q=80&w=600&h=800',
   isGroom: true
 };
 
 export const BRIDE_DATA: Profile = {
-  name: 'Khadijah',
-  fullName: 'Khadijah Az-Zahra',
+  name: 'Fatimah',
+  fullName: 'Fatimah Az Zahra',
   parentFather: 'Bapak H. Muhammad Yusuf',
   parentMother: 'Ibu Hj. Fatimah Azzahra',
-  instagram: 'khadijah_zahra',
+  instagram: 'fatimah_azzahra',
   photoUrl: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=600&h=800',
   isGroom: false
 };
@@ -132,7 +132,7 @@ export const LOVE_STORIES: StoryEvent[] = [
   {
     year: '2025',
     title: 'Khithbah (Pertunangan)',
-    description: 'Dengan niat ibadah menyempurnakan setengah agama, Basyar mendatangi kediaman orang tua Khadijah untuk memohon restu melakukan Khithbah secara resmi dan kekeluargaan.',
+    description: 'Dengan niat ibadah menyempurnakan setengah agama, Fahri mendatangi kediaman orang tua Fatimah untuk memohon restu melakukan Khithbah secara resmi dan kekeluargaan.',
     imageUrl: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=600&h=400'
   },
   {
@@ -154,11 +154,11 @@ export const GALLERY_PHOTOS = [
   },
   {
     url: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=800&h=1000',
-    title: 'Khadijah Az-Zahra'
+    title: 'Fatimah Az Zahra'
   },
   {
     url: 'https://images.unsplash.com/photo-1607990283143-e81e7a2c93ab?auto=format&fit=crop&q=80&w=800&h=1000',
-    title: 'M Khoirul Basyar'
+    title: 'Fahri Assyauqi'
   },
   {
     url: 'https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&q=80&w=800&h=600',
@@ -174,12 +174,12 @@ export const GIFT_ACCOUNTS: GiftAccount[] = [
   {
     bankName: 'Bank Syariah Indonesia (BSI)',
     accountNumber: '7148902144',
-    accountHolder: 'M Khoirul Basyar'
+    accountHolder: 'Fahri Assyauqi'
   },
   {
     bankName: 'Bank Mandiri',
     accountNumber: '1180009476532',
-    accountHolder: 'Khadijah Az-Zahra'
+    accountHolder: 'Fatimah Az Zahra'
   }
 ];
 
@@ -196,7 +196,7 @@ export const DEFAULT_WISHES: Wish[] = [
     id: 'w2',
     name: 'Syaikh Abdul Karim',
     relation: 'Keluarga',
-    message: 'Selamat menempuh hidup baru Akhi Basyar dan Ukhti Khadijah. Semoga dikaruniai keturunan yang sholeh dan sholehah serta selalu istiqomah di jalan-Nya.',
+    message: 'Selamat menempuh hidup baru Akhi Fahri dan Ukhti Fatimah. Semoga dikaruniai keturunan yang sholeh dan sholehah serta selalu istiqomah di jalan-Nya.',
     timestamp: '2026-06-26T14:32:00Z',
     isAttending: 'Hadir'
   },
@@ -204,7 +204,7 @@ export const DEFAULT_WISHES: Wish[] = [
     id: 'w3',
     name: 'Rian Hidayat',
     relation: 'Teman',
-    message: 'Mantap Bro Basyar! Lancar sampai hari H ya. Semoga berkah pernikahannya, menjadi imam yang hebat buat Khadijah.',
+    message: 'Mantap Bro Fahri! Lancar sampai hari H ya. Semoga berkah pernikahannya, menjadi imam yang hebat buat Fatimah.',
     timestamp: '2026-06-27T02:15:00Z',
     isAttending: 'Hadir'
   }

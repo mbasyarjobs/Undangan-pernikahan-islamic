@@ -366,7 +366,7 @@ export default function App() {
                     {GROOM_DATA.fullName}
                   </h4>
                   <p className="text-xs text-gold-600 dark:text-gold-400 font-semibold tracking-wider italic">
-                    — M. Khoirul Basyar —
+                    — Fahri —
                   </p>
                 </div>
 
@@ -425,7 +425,7 @@ export default function App() {
                     {BRIDE_DATA.fullName}
                   </h4>
                   <p className="text-xs text-gold-600 dark:text-gold-400 font-semibold tracking-wider italic">
-                    — Khadijah —
+                    — Fatimah —
                   </p>
                 </div>
 
